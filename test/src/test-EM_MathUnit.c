@@ -1,7 +1,16 @@
-#include <stdio.h>
-#include "../src/EM_MathUnit.h"
+#include <unity.h>
 
-int main() {
+#include <EM_MathUnit.h>
+
+void TEST_RMS(void) {
+    for (uint32_t i = 0; i < BUFFERSIZE; i++) {
+        calculateRootMeanSquare((i % 2) ? 0 : 4096);
+    }
+    TEST_ASSERT_FLOAT_WITHIN(0.000805, 2.33152904747, getRootMeanSquare());
+
+
+    // Simulate sine wave dived into 10 samples with the sine:
+    // sin(pi/10 t) from 0 to 4
     for (uint32_t i = 0; i < BUFFERSIZE; i++) {
         uint16_t sineValue = 0;
 
@@ -21,7 +30,18 @@ int main() {
 
         calculateRootMeanSquare(sineValue);
     }
-    printf("%f \n", getRootMeanSquare());
+    // Actual value of the simulated sine is 1.29175, but because of steps actual value should be
+    TEST_ASSERT_FLOAT_WITHIN(0.000805, 1.4758, getRootMeanSquare());
+}
+
+int main(int argc, char **argv) {
+    UNITY_BEGIN();
+
+    // Voltages
+    RUN_TEST(TEST_RMS);
+
+
+    UNITY_END();
 
     return 0;
 }
