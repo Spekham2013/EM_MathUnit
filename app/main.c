@@ -2,26 +2,22 @@
 #include "../src/EM_MathUnit.h"
 
 int main() {
+    struct frequencyCalcParameters param;
+    param.ID                = 0;
+    param.BufferIndex       = 0;
+    param.dBm_A_Constant    = 50.1882057716437;
+    param.dBm_B_Constant    = -85.8243412797992;
+
+
     for (uint32_t i = 0; i < BUFFERSIZE; i++) {
-        uint16_t sineValue = 0;
-
-        switch (i % 10) {
-            case 0: sineValue = 0; break;
-            case 1: sineValue = 1266; break;
-            case 2: sineValue = 2408; break;
-            case 3: sineValue = 3314; break;
-            case 4: sineValue = 3896; break;
-            // case 5: sineValue = 4096; break;
-            // case 6: sineValue = 3896; break;
-            // case 7: sineValue = 3314; break;
-            // case 8: sineValue = 2408; break;
-            // case 9: sineValue = 1266; break;
-            default: sineValue = 0; break;
-        }
-
-        calculateRootMeanSquare(sineValue);
+        fillRMSBuffer((i % 2) ? 0 : 4096, &param);
     }
-    printf("%f \n", getRootMeanSquare());
+    float dBm;
+    float power;
+    float electricField; 
+    float magneticField; 
+    float powerDensity;
+    getEMVariables(&param, &dBm, &power, &electricField, &magneticField, &powerDensity);
 
     return 0;
 }
