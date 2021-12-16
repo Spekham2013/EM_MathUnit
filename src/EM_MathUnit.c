@@ -9,7 +9,7 @@ uint8_t fillRMSBuffer(uint16_t sample, struct frequencyCalcParameters* frequency
 
     if (frequencyInfo->BufferIndex < BUFFERSIZE) {
         // Directly square sample
-        frequencyInfo->Buffer[frequencyInfo->BufferIndex++] = sample * sample;
+        frequencyInfo->Buffer[frequencyInfo->BufferIndex++] = (sample & 0x0FFF) * (sample & 0x0FFF);
 
         return SUCCES;
     }
