@@ -22,7 +22,7 @@
 #define FAILURE -1
 #endif
 
-#define BUFFERSIZE 1024
+#define BUFFERLENGTH 1024
 
 // 
 // Structs
@@ -43,7 +43,7 @@
  */
 struct frequencyCalcParameters {
     uint32_t ID;
-    uint32_t Buffer[BUFFERSIZE];
+    uint32_t Buffer[BUFFERLENGTH];
     uint32_t BufferIndex;
     float dBm_A_Constant;
     float dBm_B_Constant;

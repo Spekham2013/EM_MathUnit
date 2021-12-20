@@ -7,14 +7,14 @@
 */
 uint8_t fillRMSBuffer(uint16_t sample, struct frequencyCalcParameters* frequencyInfo) {
 
-    if (frequencyInfo->BufferIndex < BUFFERSIZE) {
+    if (frequencyInfo->BufferIndex < BUFFERLENGTH) {
         // Directly square sample
         frequencyInfo->Buffer[frequencyInfo->BufferIndex++] = (sample & 0x0FFF) * (sample & 0x0FFF);
 
         return SUCCES;
     }
     
-    if (frequencyInfo->BufferIndex == BUFFERSIZE){
+    if (frequencyInfo->BufferIndex == BUFFERLENGTH){
         return BUFFERFULL;
     }
 
@@ -30,7 +30,7 @@ uint8_t fillRMSBuffer(uint16_t sample, struct frequencyCalcParameters* frequency
 void getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, float* power, float* electricField, float* magneticField, float* powerDensity) {
     // Calculate RMS value
     uint64_t total = 0;
-    for (uint32_t i = 0; i < BUFFERSIZE; i++) {
+    for (uint32_t i = 0; i < BUFFERLENGTH; i++) {
         total += frequencyInfo->Buffer[i];
     }
 
@@ -38,7 +38,7 @@ void getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, f
     frequencyInfo->BufferIndex = 0;
 
     // Calculate the voltage
-    float voltage = (float)sqrtf(total / BUFFERSIZE)*0.000805 + 0.0;
+    float voltage = (float)sqrtf(total / BUFFERLENGTH)*0.000805 + 0.0;
 
     // Calculate the EM variables
     *dBm            = convertVoltageTodBm   (voltage, frequencyInfo);
