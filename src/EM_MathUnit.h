@@ -13,8 +13,14 @@
 // Functional constants
 // 
 #define BUFFERFULL 1
-#define SUCCES     0
-#define FAILURE    -1
+
+#ifndef SUCCES
+#define SUCCES 0
+#endif
+
+#ifndef FAILURE
+#define FAILURE -1
+#endif
 
 #define BUFFERSIZE 1024
 
