@@ -6,11 +6,14 @@
 * and notifying the user when the buffer is full.
 */
 uint8_t fillRMSBuffer(uint16_t sample, struct frequencyCalcParameters* frequencyInfo) {
+    if (frequencyInfo->BufferIndex == 0) {
+        frequencyInfo->Buffer = 0;
+    }
 
     if (frequencyInfo->BufferIndex < BUFFERLENGTH) {
         // Directly square sample
         // frequencyInfo->Buffer[frequencyInfo->BufferIndex++] = (sample & 0x0FFF) * (sample & 0x0FFF);
-        frequencyInfo->Buffer =+ (sample & 0x0FFF) * (sample & 0x0FFF);
+        frequencyInfo->Buffer = (sample * sample) + frequencyInfo->Buffer;
         frequencyInfo->BufferIndex++;
 
         return SUCCES;
@@ -37,7 +40,6 @@ void getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, f
     // }
 
     // Reset the buffer index
-    frequencyInfo->Buffer      = 0;
     frequencyInfo->BufferIndex = 0;
 
     // Calculate the voltage

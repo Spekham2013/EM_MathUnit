@@ -9,7 +9,7 @@ int main() {
     param.dBm_B_Constant    = -85.8243412797992;
 
 
-    for (uint32_t i = 0; i < BUFFERSIZE; i++) {
+    for (uint32_t i = 0; i < 1024; i++) {
         fillRMSBuffer((i % 2) ? 0 : 4096, &param);
     }
     float dBm;

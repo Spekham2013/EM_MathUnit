@@ -10,7 +10,7 @@ void TEST_RMS(void) {
     param.dBm_B_Constant    = -85.8243412797992;
 
 
-    for (uint32_t i = 0; i < BUFFERSIZE; i++) {
+    for (uint32_t i = 0; i < 1024; i++) {
         fillRMSBuffer((i % 2) ? 0 : 4096, &param);
     }
     float dBm;
@@ -23,7 +23,7 @@ void TEST_RMS(void) {
 
     // Simulate sine wave dived into 10 samples with the sine:
     // sin(pi/10 t) from 0 to 4
-    for (uint32_t i = 0; i < BUFFERSIZE; i++) {
+    for (uint32_t i = 0; i < 1024; i++) {
         uint16_t sineValue = 0;
 
         switch (i % 10) {
