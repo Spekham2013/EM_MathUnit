@@ -28,26 +28,42 @@
 // Structs
 // 
 
+static const char *TAG_MATHUNIT = "MATHUNIT";
+
+/** @struct ADCCalibration
+ *  @brief  This struct is used for storing ADC calibration data.
+ *  @var ADCCalibration::A_Constant 
+ *  The A variable for calculating the voltage
+ *  @var ADCCalibration::B_Contsant 
+ *  The A variable for calculating the voltage
+ */
+struct ADCCalibration {
+    float A_Constant;
+    float B_Constant;
+};
+
 /** @struct frequencyCalcParameters
  *  @brief This struct is used for storing and passing information to user functions
  *  @var frequencyCalcParameters::ID 
  *  This value must be unique
- *  @var frequencyCalcParameters::Buffer[BUFFERSIZE] 
+ *  @var frequencyCalcParameters::Buffer
  *  Used to calculate the RMS no initialization required
  *  @var frequencyCalcParameters::BufferIndex 
  *  Used for keeping track of the index, MUST be initialized to 0
  *  @var frequencyCalcParameters::dBm_A_Constant 
- *  The A variable for calculuting the power in dBM
+ *  The A variable for calculating the power in dBM
  *  @var frequencyCalcParameters::dBm_B_Constant 
- *  The A variable for calculuting the power in dBM
+ *  The A variable for calculating the power in dBM
+ *  @var frequencyCalcParameters::ADCCalibrationData 
+ *  Pointer to an optional struct for the ADC calibration data
  */
 struct frequencyCalcParameters {
     uint32_t ID;
-    // uint32_t Buffer[BUFFERLENGTH];
     uint64_t Buffer;
     uint32_t BufferIndex;
     float dBm_A_Constant;
     float dBm_B_Constant;
+    struct ADCCalibration* ADCCalibrationData;
 };
 
 // 
