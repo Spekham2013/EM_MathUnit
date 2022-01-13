@@ -8,6 +8,7 @@
 // Math constants
 // 
 #define PI120 376.99111843077518861551720599354034610366032792501269851699
+#define LIGHTSPEED 299792458
 
 // 
 // Functional constants
@@ -63,6 +64,8 @@ struct frequencyCalcParameters {
     uint32_t BufferIndex;
     float dBm_A_Constant;
     float dBm_B_Constant;
+    float antennaFactor;
+    float frequency;
     struct ADCCalibration* ADCCalibrationData;
 };
 
@@ -109,11 +112,20 @@ float convertVoltageTodBm(float voltage, struct frequencyCalcParameters* frequen
 float convertdBmToWatts(float dBm);
 
 /**
+* @brief Function for calculating the power density
+* @param power The power in watt
+* @param antennaFactor The antennaFactor
+* @param frequency The frequency of the signal
+* @return Returns the power density.
+*/
+float calculatePowerDensity(float power, float antennaFactor, float frequency);
+
+/**
 * @brief Function for calculating the electric field strength
-* @param power The power in watts
+* @param powerDensity The power density
 * @return Returns the electric field strength.
 */
-float calculateElectricField(float power);
+float calculateElectricField(float powerDensity);
 
 /**
 * @brief Function for calculating the magnetic field strength
@@ -121,5 +133,7 @@ float calculateElectricField(float power);
 * @return Returns the magnetic field strength.
 */
 float calculateMagneticField(float electricField);
+
+
 
 #endif

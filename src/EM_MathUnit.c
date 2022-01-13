@@ -51,9 +51,9 @@ void getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, f
     // Calculate the EM variables
     *dBm            = convertVoltageTodBm   (voltage, frequencyInfo);
     *power          = convertdBmToWatts     (*dBm);
-    *electricField  = calculateElectricField(*power);
+    *powerDensity   = calculatePowerDensity (*power, frequencyInfo->antennaFactor, frequencyInfo->frequency);
+    *electricField  = calculateElectricField(*powerDensity);
     *magneticField  = calculateMagneticField(*electricField);
-    *powerDensity   = 0.0;
 }
 
 /**
@@ -67,30 +67,24 @@ float convertVoltageTodBm   (float voltage, struct frequencyCalcParameters* freq
     return (a * voltage) + b;
 }
 
-/**
-* The formula for this function is:
-* P = 10^{dBm / 10}
-*/
 float convertdBmToWatts     (float dBm) {
     float intermediate = dBm / 10.0;
 
     return pow(10.0, intermediate);
 }
 
-/**
-* The formula for this function is:
-* |E| = \sqrt{P * 120pi}
-*/
-float calculateElectricField(float power) {
-    float intermediate = power * PI120;
+float calculatePowerDensity(float power, float antennaFactor, float frequency) {
+    float effectiveSurface = antennaFactor * ((LIGHTSPEED) / (4 * M_PI * pow(frequency, 2)));
+
+    return power / effectiveSurface;
+}
+
+float calculateElectricField(float powerDensity) {
+    float intermediate = powerDensity * PI120;
 
     return sqrt(intermediate);
 }
 
-/**
-* The formula for this function is:
-* |H| = |E|/120pi
-*/
 float calculateMagneticField(float electricField) {
     float intermediate = electricField / PI120;
 
