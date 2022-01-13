@@ -74,7 +74,7 @@ float convertdBmToWatts     (float dBm) {
 }
 
 float calculatePowerDensity(float power, float antennaFactor, float frequency) {
-    float effectiveSurface = antennaFactor * ((LIGHTSPEED) / (4 * M_PI * pow(frequency, 2)));
+    float effectiveSurface = antennaFactor * (pow(LIGHTSPEED, 2) / (4 * M_PI * pow(frequency, 2)));
 
     return power / effectiveSurface;
 }
