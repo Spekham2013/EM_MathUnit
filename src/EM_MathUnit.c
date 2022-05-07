@@ -31,7 +31,7 @@ uint8_t fillRMSBuffer(uint16_t sample, struct frequencyCalcParameters* frequency
 * This voltage is then used to convert to dBm and 
 * other EM related values
 */
-void getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, float* power, float* electricField, float* magneticField, float* powerDensity) {
+void getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, float* power, float* powerDensity, float* electricField) {
     // Calculate RMS value
     uint64_t total = frequencyInfo->Buffer;
     total          = total / BUFFERLENGTH;
@@ -53,7 +53,6 @@ void getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, f
     *power          = convertdBmToWatts     (*dBm);
     *powerDensity   = calculatePowerDensity (*power, frequencyInfo->antennaFactor, frequencyInfo->frequency);
     *electricField  = calculateElectricField(*powerDensity);
-    *magneticField  = calculateMagneticField(*electricField);
 }
 
 /**
@@ -67,16 +66,17 @@ float convertVoltageTodBm   (float voltage, struct frequencyCalcParameters* freq
     return (a * voltage) + b;
 }
 
-float convertdBmToWatts     (float dBm) {
+float convertdBmToWatts(float dBm) {
     float intermediate = dBm / 10.0;
 
-    return pow(10.0, intermediate);
+    return (1.0e-3) * pow(10.0, intermediate);
 }
 
 float calculatePowerDensity(float power, float antennaFactor, float frequency) {
-    float effectiveSurface = antennaFactor * (pow(LIGHTSPEED, 2) / (4 * M_PI * pow(frequency, 2)));
+    float antennaGain = pow(10, antennaFactor / 10.0);
+    float antenna_app = antennaGain * (pow(LIGHTSPEED, 2)) / (4 * M_PI * pow(frequency, 2));
 
-    return power / effectiveSurface;
+    return power / antenna_app;
 }
 
 float calculateElectricField(float powerDensity) {
@@ -85,8 +85,3 @@ float calculateElectricField(float powerDensity) {
     return sqrt(intermediate);
 }
 
-float calculateMagneticField(float electricField) {
-    float intermediate = electricField / PI120;
-
-    return intermediate;
-}

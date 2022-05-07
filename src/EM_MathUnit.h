@@ -1,14 +1,19 @@
 #ifndef EM_MATHUNIT_H
 #define EM_MATHUNIT_H
 
+#include <stddef.h>
 #include <stdint.h>
 #include <math.h>
+
+#ifndef M_PI
+    #define M_PI 3.14159265358979323846
+#endif
 
 // 
 // Math constants
 // 
 #define PI120 376.99111843077518861551720599354034610366032792501269851699
-#define LIGHTSPEED 299792458
+#define LIGHTSPEED 299792458.0
 
 // 
 // Functional constants
@@ -29,7 +34,7 @@
 // Structs
 // 
 
-static const char *TAG_MATHUNIT = "MATHUNIT";
+#define TAG_MATHUNIT "MATHUNIT"
 
 /** @struct ADCCalibration
  *  @brief  This struct is used for storing ADC calibration data.
@@ -86,11 +91,10 @@ uint8_t fillRMSBuffer (uint16_t sample, struct frequencyCalcParameters* frequenc
 * @param frequencyInfo The pointer to the struct array with constants and the buffer
 * @param dBm Pointer to a float for storing the power in dBm
 * @param power Pointer to a float for storing the power in watts
-* @param electricField Pointer to a float for storing the electric field
-* @param magneticField Pointer to a float for storing the magnetic field
 * @param powerDensity Pointer to a float for storing the power density
+* @param electricField Pointer to a float for storing the electric field
 */
-void    getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, float* power, float* electricField, float* magneticField, float* powerDensity);
+void    getEMVariables(struct frequencyCalcParameters* frequencyInfo, float* dBm, float* power, float* powerDensity, float* electricField);
 
 // 
 // Math functions
@@ -112,15 +116,6 @@ float convertVoltageTodBm(float voltage, struct frequencyCalcParameters* frequen
 float convertdBmToWatts(float dBm);
 
 /**
-* @brief Function for calculating the power density
-* @param power The power in watt
-* @param antennaFactor The antennaFactor
-* @param frequency The frequency of the signal
-* @return Returns the power density.
-*/
-float calculatePowerDensity(float power, float antennaFactor, float frequency);
-
-/**
 * @brief Function for calculating the electric field strength
 * @param powerDensity The power density
 * @return Returns the electric field strength.
@@ -128,12 +123,12 @@ float calculatePowerDensity(float power, float antennaFactor, float frequency);
 float calculateElectricField(float powerDensity);
 
 /**
-* @brief Function for calculating the magnetic field strength
-* @param electricField The electicfield strength
-* @return Returns the magnetic field strength.
+* @brief Function for calculating the power density
+* @param power The power in watt
+* @param antennaFactor The antennaFactor
+* @param frequency The frequency of the signal
+* @return Returns the power density.
 */
-float calculateMagneticField(float electricField);
-
-
+float calculatePowerDensity(float power, float antennaFactor, float frequency);
 
 #endif

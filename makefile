@@ -29,7 +29,7 @@ endif
 COMPILE=gcc
 
 CFLAGS = -std=c99 -lm
-# CFLAGS += -Wall
+CFLAGS += -Wall
 # CFLAGS += -Wextra
 # CFLAGS += -Werror 
 # CFLAGS += -Wpointer-arith
